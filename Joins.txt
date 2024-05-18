@@ -1,0 +1,43 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+# Create a Spark session
+spark = SparkSession.builder.appName("JoinExample").getOrCreate()
+
+# Sample data for DataFrame1
+data1 = [("Alice", 1), ("Bob", 2), ("Charlie", 3)]
+columns1 = ["Name", "ID"]
+df1 = spark.createDataFrame(data1, columns1)
+
+# Sample data for DataFrame2
+data2 = [("Alice", "Engineer"), ("Bob", "Doctor"), ("David", "Teacher")]
+columns2 = ["Name", "Occupation"]
+df2 = spark.createDataFrame(data2, columns2)
+
+# Inner Join
+inner_join_df = df1.join(df2, "Name", "inner")
+
+# Left Join
+left_join_df = df1.join(df2, "Name", "left")
+
+# Right Join
+right_join_df = df1.join(df2, "Name", "right")
+
+# Full Outer Join
+full_outer_join_df = df1.join(df2, "Name", "outer")
+
+# Display the results
+print("Inner Join:")
+inner_join_df.show()
+
+print("Left Join:")
+left_join_df.show()
+
+print("Right Join:")
+right_join_df.show()
+
+print("Full Outer Join:")
+full_outer_join_df.show()
+
+# Stop the Spark session
+spark.stop()

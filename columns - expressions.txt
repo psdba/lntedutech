@@ -1,0 +1,56 @@
+
+```python
+# Import necessary Spark libraries
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, expr
+
+# Create a SparkSession
+spark = SparkSession.builder \
+    .appName("ColumnsExpressionsDemo") \
+    .getOrCreate()
+
+# Create a sample DataFrame
+data = [("John", 25, "New York"),
+        ("Alice", 30, "Chicago"),
+        ("Bob", 35, "San Francisco")]
+
+columns = ["Name", "Age", "City"]
+
+df = spark.createDataFrame(data, columns)
+
+# Display the DataFrame
+print("Original DataFrame:")
+df.show()
+
+# Use case: Adding a new column using expressions
+df_with_new_column = df.withColumn("AgeInTwoYears", col("Age") + 2)
+
+print("\nDataFrame with Age incremented by 2 years:")
+df_with_new_column.show()
+
+# Use case: Filtering data using expressions
+filtered_df = df.filter(expr("Age >= 30"))
+
+print("\nDataFrame filtered for Age >= 30:")
+filtered_df.show()
+
+# Use case: Applying complex transformations using expressions
+transformed_df = df.withColumn("CityLength", expr("LENGTH(City)"))
+
+print("\nDataFrame with CityLength column:")
+transformed_df.show()
+
+# Stop the SparkSession
+spark.stop()
+```
+
+In this demonstration:
+
+1. We create a sample DataFrame with columns "Name", "Age", and "City".
+2. We use expressions to perform various operations:
+   - Adding a new column "AgeInTwoYears" where we increment the "Age" column by 2.
+   - Filtering the DataFrame to retain only rows where "Age" is greater than or equal to 30.
+   - Creating a new column "CityLength" which stores the length of the "City" string.
+3. We display the original DataFrame along with the results of each transformation.
+
+This demo showcases how columns and expressions can be used to manipulate and transform data efficiently within Apache Spark.

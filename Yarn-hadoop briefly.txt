@@ -1,0 +1,55 @@
+YARN, short for Yet Another Resource Negotiator, is a core component of Hadoop's architecture, introduced in Hadoop 2.x. It serves as the cluster resource management layer, responsible for resource allocation and job scheduling in a Hadoop cluster.
+
+The architecture of YARN consists of two main components:
+
+1. ResourceManager (RM): The ResourceManager is the master daemon in YARN, responsible for managing the allocation of resources across the cluster. It keeps track of available resources, negotiates resource requests from various applications, and schedules tasks to run on the cluster.
+
+2. NodeManager (NM): Each node in the Hadoop cluster runs a NodeManager daemon, which is responsible for managing resources and executing tasks on that particular node. NodeManagers report resource utilization back to the ResourceManager and are responsible for launching and monitoring application containers.
+
+YARN allows different processing frameworks to run on the same Hadoop cluster, enabling better resource utilization and multi-tenancy. This flexibility makes it suitable for various use cases, including:
+
+1. Batch Processing: YARN can efficiently schedule and execute batch processing jobs, such as data processing, ETL (Extract, Transform, Load) operations, and analytics tasks.
+
+2. Interactive Query: Frameworks like Apache Hive, Apache Tez, and Apache Spark can leverage YARN for interactive query processing, enabling users to run ad-hoc queries on large datasets with low latency.
+
+3. Stream Processing: YARN supports real-time stream processing frameworks like Apache Storm and Apache Flink, allowing applications to process continuous streams of data in near real-time.
+
+4. Machine Learning: YARN can be used to run distributed machine learning algorithms across a Hadoop cluster using frameworks like Apache Mahout, Apache Spark MLlib, or TensorFlow on YARN.
+
+Application Master:
+=====================
+
+
+1. Application Submission: When a user submits an application (e.g., MapReduce job, Spark application) to the ResourceManager, the ResourceManager assigns an ApplicationMaster for that application.
+
+2. Resource Negotiation: The ApplicationMaster negotiates with the ResourceManager to request the necessary resources (CPU, memory, etc.) for executing the tasks of the application.
+
+3. Task Execution: Once the resources are allocated, the ApplicationMaster coordinates with NodeManagers to launch application containers on the cluster nodes. These containers host the actual tasks (map or reduce tasks in MapReduce, executors in Spark, etc.) of the application.
+
+4. Monitoring and Fault Tolerance: Throughout the execution of the application, the ApplicationMaster monitors the progress of tasks, handles task failures, and requests additional resources if needed. It also reports the status of the application back to the client and ResourceManager.
+
+5. Application Completion: When the application finishes executing all its tasks, the ApplicationMaster informs the ResourceManager about its completion and releases the allocated resources.
+
+The ApplicationMaster is designed to be framework-specific, meaning different processing frameworks (e.g., MapReduce, Spark, Tez) have their own ApplicationMaster implementations tailored to their requirements. This allows for flexibility and optimization, as each framework can have specialized logic for resource management and job execution.
+
+In a YARN demo, showcasing the role of the ApplicationMaster would involve explaining how it interacts with the ResourceManager, coordinates with NodeManagers, and manages the execution of tasks within a specific application. This demonstration would help users understand the dynamic resource allocation and efficient task management capabilities provided by YARN through the ApplicationMaster component.
+
+
+Tez
+=======
+
+Apache Tez is a data processing framework built on top of YARN, designed to optimize the execution of complex data processing tasks in Apache Hadoop. Tez aims to improve the performance of data processing applications by providing a more flexible and efficient execution engine compared to traditional MapReduce.
+
+1. Execution Model: Tez introduces a directed acyclic graph (DAG) execution model, where tasks are represented as vertices and data flow between tasks as edges in the graph. This allows for better optimization of data movement and computation, leading to improved performance.
+
+2. Data Locality Optimization: Tez optimizes data locality by allowing tasks to be scheduled closer to the data they need to process. This reduces network overhead and improves overall job performance.
+
+3. Dynamic Task Execution: Tez supports dynamic task execution, enabling tasks to start as soon as their dependencies are satisfied. This reduces job startup time and improves resource utilization.
+
+4. User-defined Input/Output: Tez allows users to define custom input/output formats and processing logic, providing greater flexibility and control over data processing workflows.
+
+5. Integration with Higher-level Frameworks: Tez is integrated with higher-level data processing frameworks like Apache Hive and Apache Pig, enabling them to leverage its performance benefits without requiring significant changes to existing applications.
+
+Use Case: Tez can be used for a wide range of data processing tasks, including batch processing, interactive queries, and real-time stream processing. For example, in a batch processing scenario, Tez can efficiently process large volumes of data using its DAG execution model, optimizing resource usage and reducing job completion times.
+
+Demo: A demo of Tez could involve setting up a Hadoop cluster with Tez installed, submitting a data processing job using Tez, and comparing its performance with a similar job executed using traditional MapReduce. The demo could showcase Tez's ability to optimize task execution, improve data locality, and reduce job completion times, highlighting its benefits for various data processing workloads.

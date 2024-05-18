@@ -1,0 +1,49 @@
+Aggregations in Apache Spark involve operations that summarize and compute statistics over groups of data. Here's a brief explanation along with a use case and demo:
+
+1. Aggregation Functions: Apache Spark provides various built-in aggregation functions such as `count`, `sum`, `avg`, `min`, `max`, etc., to perform computations over grouped data.
+
+2. Grouping: Aggregations are typically performed after grouping data based on one or more columns. This allows applying aggregation functions separately for each group.
+
+Use Case and Demo:
+
+Suppose we have a dataset of sales transactions containing information about products, their categories, and sales amounts. We want to compute the total sales amount for each product category.
+
+```python
+# Import necessary Spark libraries
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, sum
+
+# Create a SparkSession
+spark = SparkSession.builder \
+    .appName("AggregationsDemo") \
+    .getOrCreate()
+
+# Sample sales data
+data = [("Product_A", "Category_X", 100),
+        ("Product_B", "Category_Y", 150),
+        ("Product_C", "Category_X", 200),
+        ("Product_D", "Category_Z", 250),
+        ("Product_E", "Category_Y", 300)]
+
+columns = ["Product", "Category", "Amount"]
+
+# Create a DataFrame
+df = spark.createDataFrame(data, columns)
+
+# Group by category and compute total sales amount
+category_sales = df.groupBy("Category") \
+                   .agg(sum("Amount").alias("TotalSales"))
+
+# Display the result
+print("Total Sales Amount by Category:")
+category_sales.show()
+
+# Stop the SparkSession
+spark.stop()
+```
+
+In this demo:
+
+- We create a DataFrame containing sales data with columns "Product", "Category", and "Amount".
+- We group the data by "Category" and compute the total sales amount for each category using the `sum` aggregation function.
+- Finally, we display the result showing the total sales amount for each product category.
